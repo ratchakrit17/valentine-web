@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Valentine Day ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary-pink: #fff0f3;
+            --envelope-color: #ffcad4;
+            --film-bg: #1a1a1a;
+            --heart-red: #ff4d6d;
+            --sweet-pink: #ffdeed;
+            --calendar-bg: #fdfaf7;
+            --stem-green: #74c69d;
+        }
+
+        body {
+            font-family: 'Mali', cursive;
+            background: var(--primary-pink);
+            margin: 0;
+            overflow-x: hidden;
+            color: #444;
+        }
+
+        /* --- Login Screen --- */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, var(--sweet-pink) 0%, #ffafbd 100%);
+            z-index: 2000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: 0.8s ease-in-out;
+        }
+
+        /* --- CSS Tulip Art --- */
+        .flower-container {
+            position: relative;
+            width: 120px;
+            height: 160px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            animation: flowerFloat 4s infinite ease-in-out;
+            z-index: 2100;
+        }
+
+        .stem {
+            width: 6px;
+            height: 80px;
+            background: var(--stem-green);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            background: #95d5b2;
+            border-radius: 0 50px;
+            left: -25px;
+            top: 30px;
+            transform: rotate(-20deg);
+        }
+        .leaf-2 {
+            left: 5px;
+            top: 15px;
+            border-radius: 50px 0;
+            transform: rotate(20deg);
+        }
+
+        .tulip-head {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 55px;
+        }
+
+        .petal {
+            position: absolute;
+            bottom: 0;
+            width: 35px;
+            height: 50px;
+            background: #ff758f;
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            box-shadow: inset -5px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .petal-left { left: -10px; transform: rotate(-25deg); background: #ff4d6d; z-index: 2; }
+        .petal-right { right: -10px; transform: rotate(25deg); background: #ff4d6d; z-index: 2; }
+        .petal-center { left: 7px; bottom: 2px; width: 36px; height: 52px; background: #ff758f; z-index: 1; }
+
+        @keyframes flowerFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+            padding: 35px; border-radius: 30px; 
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            text-align: center; width: 85%; max-width: 320px; border: 2px solid #ffffff;
+        }
+
+        #passcode-input {
+            width: 100%; padding: 15px; border: 2px solid #ffcad4;
+            border-radius: 15px; font-size: 1.2rem; text-align: center;
+            letter-spacing: 5px; outline: none; box-sizing: border-box;
+            font-family: 'Mali'; margin-bottom: 15px; background: white;
+        }
+
+        #login-btn {
+            background: var(--heart-red); color: white; border: none;
+            padding: 12px 25px; border-radius: 50px; cursor: pointer;
+            width: 100%; font-size: 1.1rem; font-family: 'Mali'; transition: 0.3s;
+        }
+
+        /* --- Main App --- */
+        #main-app { display: none; }
+
+        #entry-hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background: linear-gradient(rgba(255, 175, 189, 0.3), rgba(255, 240, 243, 1));
+            padding: 40px 0; position: relative;
+        }
+        .hero-title { font-size: 2.8rem; color: var(--heart-red); margin-bottom: 50px; text-align: center; z-index: 2; }
+
+        .flower-decoration {
+            position: absolute; font-size: 3.5rem; z-index: 1;
+            filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
+            animation: sway 3s infinite ease-in-out;
+        }
+        .flower-left { left: 5%; bottom: 20%; }
+        .flower-right { right: 5%; bottom: 20%; }
+        @keyframes sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+
+        /* --- Envelope --- */
+        .envelope-wrapper { position: relative; cursor: pointer; height: 350px; display: flex; align-items: flex-end; z-index: 2; }
+        .envelope { position: relative; width: 300px; height: 200px; background: var(--envelope-color); z-index: 5; }
+        .envelope::before { content: ""; position: absolute; top: 0; z-index: 10; border-top: 110px solid #ffb3c1; border-left: 150px solid transparent; border-right: 150px solid transparent; transform-origin: top; transition: 0.6s; }
+        .envelope::after { content: ""; position: absolute; z-index: 8; width: 0; height: 0; border-top: 100px solid transparent; border-right: 150px solid #ffcad4; border-bottom: 100px solid #ffcad4; border-left: 150px solid #ffb3c1; }
+        
+        .heart-seal {
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 80px; z-index: 11; transition: 0.4s;
+            background-color: var(--heart-red);
+            clip-path: path('M40 75.35s-31.5-17.65-31.5-42.35C8.5 15.6 22.5 8.5 40 24.3 57.5 8.5 71.5 15.6 71.5 33c0 24.7-31.5 42.35-31.5 42.35z');
+        }
+
+        .letter {
+            position: absolute; bottom: 0; left: 10px; width: 280px; height: 180px;
+            background: white; z-index: 2; padding: 20px; box-sizing: border-box;
+            text-align: center; transition: 0.8s; border-radius: 5px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+        }
+        .letter img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #ffcad4; }
+        
+        .envelope.open::before { transform: rotateX(180deg); z-index: 1; }
+        .envelope.open .letter { transform: translateY(-160px); z-index: 2; height: 300px; box-shadow: 0 -10px 20px rgba(0,0,0,0.1); opacity: 1; pointer-events: auto; }
+        .envelope.open .heart-seal { opacity: 0; pointer-events: none; }
+
+        /* --- Calendar Section --- */
+        #calendar-section { display: none; padding: 80px 20px; text-align: center; background: #fff; }
+        .calendar-card {
+            background: var(--calendar-bg); width: 320px; margin: 0 auto;
+            padding: 30px 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative; border: 1px solid #eee;
+        }
+        .calendar-heart-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 200px; margin: 0 auto 20px; }
+        .mini-heart { color: #ffafbd; font-size: 1.2rem; transform: rotate(-10deg); }
+        .calendar-title { font-family: 'Georgia', serif; font-size: 2.2rem; font-style: italic; margin-bottom: 15px; color: #333; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.9rem; color: #555; }
+        .day-name { font-weight: bold; padding-bottom: 10px; font-size: 0.75rem; }
+        .date { padding: 8px 0; position: relative; }
+        .special-date { position: relative; color: white; z-index: 1; }
+        .special-date::after { content: "❤️"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -45%); font-size: 1.5rem; z-index: -1; }
+
+        /* --- Scratch Section --- */
+        #scratch-section { display: none; background: var(--film-bg); padding: 80px 20px; text-align: center; }
+        .scratch-container {
+            position: relative; width: 300px; height: 380px; margin: 0 auto;
+            background: #fff; border: 12px solid #fff;
+            border-top: 25px dashed #333; border-bottom: 25px dashed #333;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8); touch-action: none;
+        }
+        .scratch-image { width: 100%; height: 100%; object-fit: cover; }
+        #scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; }
+
+        #final-section { display: none; padding: 100px 20px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="flower-container">
+            <div class="stem">
+                <div class="leaf"></div>
+                <div class="leaf-2"></div>
+                <div class="tulip-head">
+                    <div class="petal petal-left"></div>
+                    <div class="petal petal-center"></div>
+                    <div class="petal petal-right"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-box">
+            <h2 style="color: var(--heart-red); margin-top: 10px; font-size: 1.6rem;">Happy Valentine's Day</h2>
+            <p style="color: #888; font-size: 0.9rem; margin-bottom: 20px;">กรอกวันที่เราคบกันเป็นรหัสผ่าน<br>(ววดดปปปป)<br>เธอจำได้รึป้าววววววววววววว</p>
+            <input type="tel" id="passcode-input" placeholder="••••••••" maxlength="8">
+            <button id="login-btn" onclick="checkPasscode()">จุ้บบบ❤️</button>
+            <p id="error-msg" style="color: #ff4d6d; font-size: 0.8rem; margin-top: 15px; display: none;">รหัสไม่ถูกต้องนะ ลองดูอีกทีสิบี๋ 🥺</p>
+        </div>
+    </div>
+
+    <div id="main-app">
+        <div id="entry-hero">
+            <div class="flower-decoration flower-left">🌸🌷</div>
+            <div class="flower-decoration flower-right">🌷🌸</div>
+
+            <h1 class="hero-title" data-aos="zoom-in">Valentine Day</h1>
+            
+            <div class="envelope-wrapper" onclick="openEnvelope()">
+                <div class="envelope">
+                    <div class="heart-seal"></div>
+                    <div class="letter">
+                        <img src="assets/pfah.jpg" alt="P'Fah">
+                        <p style="font-weight: bold; color: #ff4d6d; margin: 5px 0;">ถึงเธอออ🌷</p>
+                        <p style="font-size: 13px; color: #d63384; line-height: 1.4;">ขอบคุณที่เข้ามาเป็นความสุขในทุกวันน<br>รักพี่ฟ้าน้าาาาา❤️</p>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.9rem; color: #ff85a1; z-index: 2;"> แตะที่หัวใจเพื่อเปิดจดหมาย </p>
+        </div>
+
+        <div id="calendar-section" data-aos="fade-up">
+            <div class="calendar-card">
+                <div class="calendar-heart-grid">
+                    <div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div>
+                    <div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div>
+                    <div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div><div class="mini-heart">❤</div>
+                </div>
+                <div class="calendar-title">February</div>
+                <div class="calendar-grid">
+                    <div class="day-name">Mon</div><div class="day-name">Tue</div><div class="day-name">Wed</div><div class="day-name">Thu</div><div class="day-name">Fri</div><div class="day-name">Sat</div><div class="day-name">Sun</div>
+                    <div class="date"></div><div class="date"></div><div class="date"></div><div class="date"></div><div class="date"></div><div class="date"></div><div class="date">1</div>
+                    <div class="date">2</div><div class="date">3</div><div class="date">4</div><div class="date">5</div><div class="date">6</div><div class="date">7</div><div class="date">8</div>
+                    <div class="date">9</div><div class="date">10</div><div class="date">11</div><div class="date">12</div><div class="date">13</div><div class="date special-date">14</div><div class="date">15</div>
+                    <div class="date">16</div><div class="date">17</div><div class="date">18</div><div class="date">19</div><div class="date">20</div><div class="date">21</div><div class="date">22</div>
+                    <div class="date">23</div><div class="date">24</div><div class="date">25</div><div class="date">26</div><div class="date">27</div><div class="date">28</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="scratch-section">
+            <h2 style="color: #fff; margin-bottom: 20px;">Memory</h2>
+            <div class="scratch-container">
+                <img src="assets/รูปที่1.jpg" class="scratch-image">
+                <canvas id="scratch-canvas"></canvas>
+            </div>
+            <p style="color: #ffafbd; margin-top: 15px;">ระบายดูฮะ</p>
+        </div>
+
+        <div id="final-section">
+            <button id="final-btn" style="padding: 18px 40px; background: #ff4d6d; color: white; border: none; border-radius: 50px; font-family: 'Mali'; cursor: pointer;" onclick="fireConfetti()">กดดูเค้ามีไรจะบอกเธออ❤️</button>
+            <div id="final-msg" style="display:none; margin-top: 30px;">
+                <h3 style="font-size: 2rem; color: #ff4d6d;">รักพี่ฟ้าที่สุดเลยยยย! ❤️</h3>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        function checkPasscode() {
+            const input = document.getElementById('passcode-input').value;
+            // รหัสผ่าน: 27102568
+            if(input === "27102568") {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                document.getElementById('login-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'block';
+                    AOS.init({ once: false, duration: 1000 });
+                }, 800);
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        function initScratch() {
+            const canvas = document.getElementById('scratch-canvas');
+            const ctx = canvas.getContext('2d');
+            const container = document.querySelector('.scratch-container');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            ctx.fillStyle = '#c0c0c0'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            let isDrawing = false;
+            function scratch(e) {
+                if (!isDrawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(x, y, 35, 0, Math.PI * 2); ctx.fill();
+            }
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; e.preventDefault(); });
+            window.addEventListener('mouseup', () => isDrawing = false);
+            window.addEventListener('touchend', () => isDrawing = false);
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchmove', scratch);
+        }
+
+        function openEnvelope() {
+            const env = document.querySelector('.envelope');
+            if(!env.classList.contains('open')) {
+                env.classList.add('open');
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                setTimeout(() => {
+                    document.getElementById('calendar-section').style.display = 'block';
+                    document.getElementById('scratch-section').style.display = 'block';
+                    document.getElementById('final-section').style.display = 'block';
+                    initScratch();
+                    AOS.refresh();
+                }, 1000);
+            }
+        }
+
+        function fireConfetti() {
+            confetti({ particleCount: 200, spread: 90, origin: { y: 0.8 } });
+            document.getElementById('final-msg').style.display = 'block';
+            document.getElementById('final-btn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
